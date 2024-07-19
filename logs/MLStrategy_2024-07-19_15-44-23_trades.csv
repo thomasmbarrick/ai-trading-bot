@@ -1,0 +1,5 @@
+time,strategy,identifier,symbol,side,type,status,multiplier,time_in_force,asset.strike,asset.multiplier,asset.asset_type,price,filled_quantity,trade_cost
+2020-12-15 09:30:00-05:00,MLStrategy,b484057a32264638b1b42af445f69a13,NVDA,buy,market,new,1,gtc,0.0,1,stock,,,
+2020-12-15 09:30:00-05:00,MLStrategy,b484057a32264638b1b42af445f69a13,NVDA,buy,market,fill,1,gtc,0.0,1,stock,13.439749717712402,3720.3073755238474,0.0
+2020-12-28 08:30:00-05:00,MLStrategy,1af646648a074e5ab9a0e9257ee23432,NVDA,sell,limit,canceled,1,day,0.0,1,stock,,,
+2020-12-28 08:30:00-05:00,MLStrategy,47a5b1fecad440c1a5c0786bff5e8da1,NVDA,sell,stop,fill,1,day,0.0,1,stock,12.767762231826781,3720.3073755238474,0.0
