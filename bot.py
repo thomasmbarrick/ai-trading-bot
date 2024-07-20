@@ -17,19 +17,79 @@ ALPACA_CREDS = {
     "PAPER": True
 }
 
-class MLTrader(Strategy): 
+
+class MLTrader(Strategy):
     def initialize(self, symbol:str="NVDA", cash_at_risk:float=.5): 
         self.symbol = symbol
-        self.sleeptime = "24H" 
+        self.sleeptime = "12H" 
         self.last_trade = None 
         self.cash_at_risk = cash_at_risk
         self.api = REST(base_url=BASE_URL, key_id=API_KEY, secret_key=API_SECRET)
-
-    def position_sizing(self): 
-        cash = self.get_cash() 
+    
+    def fixed_fractional_position_sizing(self):
+        cash = self.get_cash()
+        risk_per_trade = cash * self.cash_at_risk
         last_price = self.get_last_price(self.symbol)
-        quantity = round(cash * self.cash_at_risk / last_price,0)
+        quantity = round(risk_per_trade / last_price, 0)
         return cash, last_price, quantity
+    
+    def fixed_dollar_position_sizing(self):
+        fixed_amount = 1000  
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(fixed_amount / last_price, 0)
+        cash = self.get_cash()
+        return cash, last_price, quantity
+
+    
+    def volatility_based_position_sizing(self):
+        cash = self.get_cash()
+        atr = self.get_atr(self.symbol) 
+        risk_per_trade = cash * self.cash_at_risk
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(risk_per_trade / atr, 0)
+        return cash, last_price, quantity
+
+    def volatility_based_position_sizing(self):
+        cash = self.get_cash()
+        atr = self.get_atr(self.symbol)  
+        risk_per_trade = cash * self.cash_at_risk
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(risk_per_trade / atr, 0)
+        return cash, last_price, quantity
+    
+    def kelly_criterion_position_sizing(self):
+        win_probability = self.get_win_probability(self.symbol)
+        win_loss_ratio = self.get_win_loss_ratio(self.symbol) 
+        kelly_fraction = win_probability - (1 - win_probability) / win_loss_ratio
+        cash = self.get_cash()
+        risk_per_trade = cash * kelly_fraction
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(risk_per_trade / last_price, 0)
+        return cash, last_price, quantity
+    
+    def equal_allocation_position_sizing(self, num_positions=10):
+        cash = self.get_cash()
+        allocation_per_position = cash / num_positions
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(allocation_per_position / last_price, 0)
+        return cash, last_price, quantity
+
+    def maximum_quantity_position_sizing(self):
+        cash = self.get_cash()
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(cash / last_price, 0)
+        return cash, last_price, quantity
+
+    def risk_parity_position_sizing(self):
+        portfolio_volatility = self.get_portfolio_volatility()  # Assume we have a method to get portfolio volatility
+        asset_volatility = self.get_asset_volatility(self.symbol)  # Assume we have a method to get asset volatility
+        cash = self.get_cash()
+        risk_per_trade = (cash * self.cash_at_risk) * (portfolio_volatility / asset_volatility)
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(risk_per_trade / last_price, 0)
+        return cash, last_price, quantity
+
+
 
     def get_dates(self): 
         today = self.get_datetime()
@@ -46,7 +106,7 @@ class MLTrader(Strategy):
         return probability, sentiment 
 
     def on_trading_iteration(self):
-        cash, last_price, quantity = self.position_sizing() 
+        cash, last_price, quantity = self.fixed_fractional_position_sizing() 
         probability, sentiment = self.get_sentiment()
 
         if cash > last_price: 
