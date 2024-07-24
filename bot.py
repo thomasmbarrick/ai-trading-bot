@@ -5,7 +5,7 @@ from lumibot.traders import Trader
 from datetime import datetime 
 from alpaca_trade_api import REST 
 from timedelta import Timedelta 
-from finbert_utils import estimate_sentiment
+from ai import estimate_sentiment
 import numpy as np
 import yfinance as yf
 
@@ -23,54 +23,59 @@ ALPACA_CREDS = {
 
 class MLTrader(Strategy):
     
-    """Runs at the start of the """
+    """Initialises the class with the given parameters"""
     def initialize(self, symbol:str="NVDA", cash_at_risk:float=.5): 
         self.symbol = symbol
         self.sleeptime = "12H" 
         self.last_trade = None 
         self.cash_at_risk = cash_at_risk
         self.api = REST(base_url=BASE_URL, key_id=API_KEY, secret_key=API_SECRET)
-        self.stop_loss_multiplier = .95
-        
+
+    
+    """Basic position sizing algoirthm"""
     def position_sizing(self):
         cash = self.get_cash()
         last_price = self.get_last_price(self.symbol)
         quantity = round(cash * self.cash_at_risk / last_price)
         return cash, last_price, quantity
     
+    """position sizing algoirthm that allocates a fixed percentage of their trading account to each trade. """
     def fixed_fractional_sizing(self, risk_percentage=0.02):
         cash = self.get_cash()
         last_price = self.get_last_price(self.symbol)
-        stop_loss_price = last_price * self.stop_loss_multiplier 
+        stop_loss_price = last_price * 0.95
         risk_per_share = last_price - stop_loss_price
         risk_amount = cash * risk_percentage
         quantity = round(risk_amount / risk_per_share)
         return cash, last_price, quantity
 
+    """position sizing algoirthm that allocates a fixed percentage of their trading account to each trade. """
     def equal_dollar_sizing(self, dollar_amount=10000):
         last_price = self.get_last_price(self.symbol)
         quantity = round(dollar_amount / last_price)
         return self.get_cash(), last_price, quantity
 
-    def get_dates(self): 
+    """Uses datetime library to recieve the time of which the sentiment of stocks is measured"""
+    def get_sentiment_window_dates(self): 
         today = self.get_datetime()
-        three_days_prior = today - Timedelta(days=3)
+        three_days_prior = today - Timedelta(days=5)
         return today.strftime('%Y-%m-%d'), three_days_prior.strftime('%Y-%m-%d')
 
+    """Uses the estimate_sentiment method to """
     def get_sentiment(self): 
-        today, three_days_prior = self.get_dates()
+        today, sentiment_window_start = self.get_sentiment_window_dates()
         news = self.api.get_news(symbol=self.symbol, 
-                                 start=three_days_prior, 
+                                 start=sentiment_window_start, 
                                  end=today) 
         news = [ev.__dict__["_raw"]["headline"] for ev in news]
         probability, sentiment = estimate_sentiment(news)
         return probability, sentiment 
 
+    """The trading logic which is executed on each change"""
     def on_trading_iteration(self):
         cash, last_price, quantity = self.position_sizing() 
         probability, sentiment = self.get_sentiment()
-
-        if cash > last_price: 
+        if cash > last_price: # Ensures that you have more available cash than the last price of the stock 
             if sentiment == "positive" and probability > .999: 
                 if self.last_trade == "sell": 
                     self.sell_all() 
@@ -80,7 +85,7 @@ class MLTrader(Strategy):
                     "buy", 
                     type="bracket", 
                     take_profit_price=last_price*1.20, 
-                    stop_loss_price=last_price*self.stop_loss_multiplier
+                    stop_loss_price=last_price*.95
                 )
                 self.submit_order(order) 
                 self.last_trade = "buy"

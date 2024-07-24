@@ -1,0 +1,25 @@
+time,strategy,identifier,symbol,side,type,status,multiplier,time_in_force,asset.strike,asset.multiplier,asset.asset_type,price,filled_quantity,trade_cost
+2020-01-14 09:30:00-05:00,MLTrader,329be4d90dd04e9990082674a64ef854,NVDA,buy,market,new,1,gtc,0.0,1,stock,,,
+2020-01-14 09:30:00-05:00,MLTrader,329be4d90dd04e9990082674a64ef854,NVDA,buy,market,fill,1,gtc,0.0,1,stock,6.256499767303467,7992.0,0.0
+2020-01-15 09:30:00-05:00,MLTrader,73396865996b4ac5848777f521b142f4,NVDA,buy,market,new,1,gtc,0.0,1,stock,,,
+2020-01-15 09:30:00-05:00,MLTrader,73396865996b4ac5848777f521b142f4,NVDA,buy,market,fill,1,gtc,0.0,1,stock,6.19474983215332,4036.0,0.0
+2020-01-16 09:30:00-05:00,MLTrader,2650459c9cff4c36986141fa4531ae59,NVDA,buy,market,new,1,gtc,0.0,1,stock,,,
+2020-01-16 09:30:00-05:00,MLTrader,2650459c9cff4c36986141fa4531ae59,NVDA,buy,market,fill,1,gtc,0.0,1,stock,6.192999839782715,2018.0,0.0
+2020-01-17 09:30:00-05:00,MLTrader,e278672bcab749b1bfc1720d4b0277b1,NVDA,buy,market,new,1,gtc,0.0,1,stock,,,
+2020-01-17 09:30:00-05:00,MLTrader,e278672bcab749b1bfc1720d4b0277b1,NVDA,buy,market,fill,1,gtc,0.0,1,stock,6.242499828338623,1001.0,0.0
+2020-01-27 08:30:00-05:00,MLTrader,ee2647ac5c784b9389071e4a6a37ee59,NVDA,sell,limit,canceled,1,day,0.0,1,stock,,,
+2020-01-27 08:30:00-05:00,MLTrader,e8fddeac014647d0971182078b44972a,NVDA,sell,stop,fill,1,day,0.0,1,stock,5.943674778938293,7992.0,0.0
+2020-01-27 08:30:00-05:00,MLTrader,95f71a8744524ec092bdd1aaba060392,NVDA,sell,limit,canceled,1,day,0.0,1,stock,,,
+2020-01-27 08:30:00-05:00,MLTrader,14a6ba2f062a4f4898e7235bffc9306c,NVDA,sell,stop,fill,1,day,0.0,1,stock,5.885012340545654,4036.0,0.0
+2020-01-27 08:30:00-05:00,MLTrader,13bc87330a304fc0959a9fbf0639dff8,NVDA,sell,limit,canceled,1,day,0.0,1,stock,,,
+2020-01-27 08:30:00-05:00,MLTrader,657c55e5fa21403090cc22b117d9273a,NVDA,sell,stop,fill,1,day,0.0,1,stock,5.883349847793578,2018.0,0.0
+2020-01-27 08:30:00-05:00,MLTrader,c442dadaa14e4b2aaa87786b5dfa2ed0,NVDA,sell,limit,canceled,1,day,0.0,1,stock,,,
+2020-01-27 08:30:00-05:00,MLTrader,41ec673091224a55a047b7626ec90034,NVDA,sell,stop,fill,1,day,0.0,1,stock,5.9303748369216915,1001.0,0.0
+2020-02-13 09:30:00-05:00,MLTrader,f53fffc710bb4d52a8f5e5627b6db48b,NVDA,buy,market,new,1,gtc,0.0,1,stock,,,
+2020-02-13 09:30:00-05:00,MLTrader,f53fffc710bb4d52a8f5e5627b6db48b,NVDA,buy,market,fill,1,gtc,0.0,1,stock,6.755249977111816,7055.0,0.0
+2020-02-18 09:30:00-05:00,MLTrader,8c035865924a4a98ad5a1dc25093f09d,NVDA,buy,market,new,1,gtc,0.0,1,stock,,,
+2020-02-18 09:30:00-05:00,MLTrader,8c035865924a4a98ad5a1dc25093f09d,NVDA,buy,market,fill,1,gtc,0.0,1,stock,7.140999794006348,3337.0,0.0
+2020-02-24 08:30:00-05:00,MLTrader,238230adb5e544c4ac00ea6451195069,NVDA,sell,limit,canceled,1,day,0.0,1,stock,,,
+2020-02-24 08:30:00-05:00,MLTrader,a0ae748d67d041ec98383ec481835cc7,NVDA,sell,stop,fill,1,day,0.0,1,stock,6.754749774932861,3337.0,0.0
+2020-02-27 08:30:00-05:00,MLTrader,0912107c17414826aaef39984f0b5f0d,NVDA,sell,limit,canceled,1,day,0.0,1,stock,,,
+2020-02-27 08:30:00-05:00,MLTrader,378f39d11e174507b1121080213760ad,NVDA,sell,stop,fill,1,day,0.0,1,stock,6.372499942779541,7055.0,0.0
