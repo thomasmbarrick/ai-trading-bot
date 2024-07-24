@@ -17,7 +17,7 @@ BASE_URL = "https://paper-api.alpaca.markets/v2"
 ALPACA_CREDS = {
     "API_KEY":API_KEY, 
     "API_SECRET": API_SECRET, 
-    "PAPER": True
+    "PAPER": True 
 }
 
 
@@ -30,6 +30,27 @@ class MLTrader(Strategy):
         self.last_trade = None 
         self.cash_at_risk = cash_at_risk
         self.api = REST(base_url=BASE_URL, key_id=API_KEY, secret_key=API_SECRET)
+        self.stop_loss_multiplier = .95
+        
+    def position_sizing(self):
+        cash = self.get_cash()
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(cash * self.cash_at_risk / last_price)
+        return cash, last_price, quantity
+    
+    def fixed_fractional_sizing(self, risk_percentage=0.02):
+        cash = self.get_cash()
+        last_price = self.get_last_price(self.symbol)
+        stop_loss_price = last_price * self.stop_loss_multiplier 
+        risk_per_share = last_price - stop_loss_price
+        risk_amount = cash * risk_percentage
+        quantity = round(risk_amount / risk_per_share)
+        return cash, last_price, quantity
+
+    def equal_dollar_sizing(self, dollar_amount=10000):
+        last_price = self.get_last_price(self.symbol)
+        quantity = round(dollar_amount / last_price)
+        return self.get_cash(), last_price, quantity
 
     def get_dates(self): 
         today = self.get_datetime()
@@ -46,7 +67,7 @@ class MLTrader(Strategy):
         return probability, sentiment 
 
     def on_trading_iteration(self):
-        cash, last_price, quantity = self.fixed_fractional_position_sizing() 
+        cash, last_price, quantity = self.position_sizing() 
         probability, sentiment = self.get_sentiment()
 
         if cash > last_price: 
@@ -59,7 +80,7 @@ class MLTrader(Strategy):
                     "buy", 
                     type="bracket", 
                     take_profit_price=last_price*1.20, 
-                    stop_loss_price=last_price*.95
+                    stop_loss_price=last_price*self.stop_loss_multiplier
                 )
                 self.submit_order(order) 
                 self.last_trade = "buy"
