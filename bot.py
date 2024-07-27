@@ -75,7 +75,7 @@ class MLTrader(Strategy):
     def on_trading_iteration(self):
         cash, last_price, quantity = self.position_sizing() 
         probability, sentiment = self.get_sentiment()
-        if cash > last_price: # Ensures that you have more available cash than the last price of the stock 
+        if cash > last_price:
             if sentiment == "positive" and probability > .999: 
                 if self.last_trade == "sell": 
                     self.sell_all() 

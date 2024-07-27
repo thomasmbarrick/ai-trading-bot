@@ -13,15 +13,7 @@ model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert").t
 labels = ["positive", "negative", "neutral"]
 
 def estimate_sentiment(news: str) -> Tuple[float, str]:
-    """
-    Estimates the sentiment of a given news text using FinBERT model.
 
-    Args:
-        news (str): The news text to analyze.
-
-    Returns:
-        Tuple[float, str]: A tuple containing the probability of the most likely sentiment and the sentiment label.
-    """
     # Ensure the input text is a string
     if not isinstance(news, str):
         raise ValueError("Input must be a string.")
